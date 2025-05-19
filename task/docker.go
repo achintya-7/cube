@@ -74,7 +74,7 @@ func (d *Docker) Run() DockerResult {
 	// ➥ Result: "success"}
 
 	stdcopy.StdCopy(os.Stdout, os.Stderr, reader)
-	return DockerResult{ContainerId: resp.ID, Action: "start", Result: "success"}
+	return DockerResult{ContainerID: resp.ID, Action: "start", Result: "success"}
 }
 
 func (d *Docker) Stop(id string) DockerResult {
@@ -98,5 +98,5 @@ func (d *Docker) Stop(id string) DockerResult {
 		return DockerResult{Error: err}
 	}
 
-	return DockerResult{ContainerId: id, Action: "stop", Result: "success", Error: nil}
+	return DockerResult{ContainerID: id, Action: "stop", Result: "success", Error: nil}
 }
