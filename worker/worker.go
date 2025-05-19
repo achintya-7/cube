@@ -31,22 +31,21 @@ func (w *Worker) RunTask() task.DockerResult {
 	if !task.ValidStateTransition(taskPersisted.State, taskQueued.State) {
 		err := fmt.Errorf("invalid state transition from %v to %v", taskPersisted.State, taskQueued.State)
 		result.Error = err
-	}	
+	}
 
 	switch taskQueued.State {
-		case task.Scheduled:
-			result = w.StartTask(taskQueued)
-		
-		case task.Completed:
-			result = w.StopTask(taskQueued)
-			
-		default:
-			result.Error = fmt.Errorf("invalid state %v for task %v", taskQueued.State, taskQueued.ID)
+	case task.Scheduled:
+		result = w.StartTask(taskQueued)
+
+	case task.Completed:
+		result = w.StopTask(taskQueued)
+
+	default:
+		result.Error = fmt.Errorf("invalid state %v for task %v", taskQueued.State, taskQueued.ID)
 	}
 
 	return result
 }
-
 
 func (w *Worker) StartTask(t task.Task) task.DockerResult {
 	t.StartTime = time.Now().UTC()
@@ -89,4 +88,14 @@ func (w *Worker) StopTask(t task.Task) task.DockerResult {
 
 func (w *Worker) AddTask(t task.Task) {
 	w.Queue.Enqueue(t)
+}
+
+func (w *Worker) GetTasks() []*task.Task {
+	tasks := make([]*task.Task, 0, len(w.Db))
+
+	for _, t := range w.Db {
+		tasks = append(tasks, t)
+	}
+
+	return tasks
 }

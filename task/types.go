@@ -19,25 +19,25 @@ const (
 )
 
 type Task struct {
-	ID            uuid.UUID
-	ContainerID   string
-	Name          string
-	State         State
-	Image         string
-	Memory        int
-	Disk          int
-	ExposedPorts  nat.PortSet
-	PortBindings  map[string]string
-	RestartPolicy string
-	StartTime     time.Time
-	FinishTime    time.Time
+	ID            uuid.UUID         `json:"id" binding:"required"`
+	ContainerID   string            `json:"container_id"`
+	Name          string            `json:"name" binding:"required"`
+	State         State             `json:"state" binding:"required"`
+	Image         string            `json:"image" binding:"required"`
+	Memory        int               `json:"memory" `
+	Disk          int               `json:"disk" `
+	ExposedPorts  nat.PortSet       `json:"exposed_ports"`
+	PortBindings  map[string]string `json:"port_bindings"`
+	RestartPolicy string            `json:"restart_policy"`
+	StartTime     time.Time         `json:"start_time"`
+	FinishTime    time.Time         `json:"finish_time"`
 }
 
 type TaskEvent struct {
-	ID        uuid.UUID
-	State     State
-	Timestamp time.Time
-	Task      Task
+	ID        uuid.UUID `json:"id" binding:"required"`
+	State     State     `json:"state" binding:"required"`
+	Timestamp time.Time `json:"timestamp"`
+	Task      Task      `json:"task" binding:"required"`
 }
 
 type Config struct {
